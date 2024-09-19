@@ -41,9 +41,28 @@ const ExpenseProvider = ({ children }) => {
     }
   };
 
+  // **Add the updateExpense function**
+  const updateExpense = async (id, updatedExpense) => {
+    try {
+      const res = await api.put(`/api/expenses/${id}`, updatedExpense);
+      setExpenses((prevExpenses) =>
+        prevExpenses.map((expense) => (expense._id === id ? res.data : expense))
+      );
+    } catch (err) {
+      console.error(err.response.data);
+      // Handle errors
+    }
+  };
+
   return (
     <ExpenseContext.Provider
-      value={{ expenses, getExpenses, addExpense, deleteExpense }}
+      value={{
+        expenses,
+        getExpenses,
+        addExpense,
+        deleteExpense,
+        updateExpense,
+      }}
     >
       {children}
     </ExpenseContext.Provider>
